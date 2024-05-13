@@ -10,7 +10,7 @@ async function downloadImages() {
     fs.mkdirSync('Images');
   }
 
-  for (let j = 0; j < 50; j++) {
+  for (let j = 0; j < 90; j++) {
     let hash;
     let buffer;
 

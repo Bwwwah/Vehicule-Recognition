@@ -1,13 +1,13 @@
-import fetch from 'node-fetch';
 import crypto from 'crypto';
+import fetch from 'node-fetch';
 import fs from 'fs';
 
 let previousHash = '';
 let i = 1;
 
 async function downloadImages() {
-  if (!fs.existsSync('Images')) {
-    fs.mkdirSync('Images');
+  if (!fs.existsSync('Data')) {
+    fs.mkdirSync('Data');
   }
 
   for (let j = 0; j < 90; j++) {
@@ -28,7 +28,7 @@ async function downloadImages() {
       await new Promise(resolve => setTimeout(resolve, 10 * 1000)); // 10 * 1000 ms = 10 seconds
     }
 
-    fs.writeFileSync(`Images/image_${i}.jpg`, buffer);
+    fs.writeFileSync(`/Data/image_${i}.jpg`, buffer);
     console.log(i + ' image downloaded');
     i++;
     previousHash = hash;

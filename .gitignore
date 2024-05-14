@@ -1,3 +1,6 @@
 node_modules
 package-lock.json
 .DS_Store
+*.jpg
+dataset.json
+export.json

@@ -1,6 +1,8 @@
 FROM node:latest
 WORKDIR /app
 COPY package*.json .
+ENV TZ=Europe/Paris
+RUN ln -snf /usr/share/zoneinfo/$Europe/Paris /etc/localtime && echo $Europe/Paris /etc/timezone
 RUN npm install
 ADD . .
 CMD [ "node", "Downloader.js" ]

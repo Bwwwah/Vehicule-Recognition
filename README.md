@@ -11,13 +11,13 @@ Pour commencer téléchargez ce repo git en local. Assurez vous d'avoir docker d
 Ce container permettra de récupérer les images sur la caméra cible toute les minutes. Si vous avez déja vos images passez au prochain chapitre.
 
 Placez vous dans la racine du projet et ouvrez un terminal.
-Tous d'abord construisez le container :
+Tous d'abord construisez l'image :
 
 ```
 docker build -t downloader ./Downloader
 ```
 
-A présent lancez le comme ceci sous Windows :
+A présent lancez le conteneur comme ceci sous Windows :
 
 ```
 docker run --rm -v .\Downloader\Data:/Data --name Downloader downloader
@@ -30,7 +30,7 @@ docker run --rm -v ./Downloader/Data:/Data --name Downloader downloader
 ```
 
 Attendez la fin de la récupération.
-Environ quatre-vingt dix photos devraient êtres prises sur une durée d'une heure et trente minutes (Vous pouvez changer cette valeur dans le code en modifiant la valeur de nb_photos). Une fois cela fini le container s'éteindra de lui même. Vous retrouverez vos photos dans Downloader -> Data
+Environ quatre-vingt dix photos devraient êtres prises sur une durée d'une heure et trente minutes (Vous pouvez changer cette valeur dans le code en modifiant la valeur de nb_photos). Une fois cela fini le container se supprimera de lui même. Vous retrouverez vos photos dans Downloader -> Data
 
 ## Label studio
 

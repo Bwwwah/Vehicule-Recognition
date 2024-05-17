@@ -8,7 +8,7 @@ Ce projet utilise la dernière version de node ainsi que des dépendances telle 
 
 ## Downloader
 
-Vous trouver içi un script JS qui contient la fonction `downloadImages` permet de télécharger les photos de la caméra distante grâçe au lien. Les photos sont hasher afin de les comparer et de s'assurer qu'il n'y ai pas de redondance. Elles sont nommés grâce à la date et l'heure précise dans la fonction `getFormattedTimestamp`. Vous pouvez augmenter le nombre de photos à prendre en modifiant la boucle.
+Vous trouver içi un script JS qui contient la fonction `downloadImages` permet de télécharger les photos de la caméra distante grâçe au lien. Les photos sont hasher afin de les comparer et de s'assurer qu'il n'y ai pas de redondance. Elles sont nommés grâce à la date et l'heure précise dans la fonction `getFormattedTimestamp`. Vous pouvez augmenter le nombre de photos à prendre en modifiant la variable `nb_photos`. 
 
 ## Dataset
 

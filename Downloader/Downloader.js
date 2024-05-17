@@ -5,13 +5,16 @@ import fs from 'fs';
 let previousHash = '';
 let i = 1;
 
+/*Permet de définir le nombre d'images voulus*/
+let nb_photos = 90;
+
 /*Permet de récupérer les images de la caméra toutes les minutes*/
 async function downloadImages() {
   if (!fs.existsSync('Data')) {
     fs.mkdirSync('Data');
   }
 
-  for (let j = 0; j < 90; j++) {
+  for (let j = 0; j < nb_photos; j++) {
     let hash;
     let buffer;
     

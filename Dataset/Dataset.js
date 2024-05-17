@@ -33,32 +33,32 @@ if (!fs.existsSync(imagesDir)) {
   fs.mkdirSync(imagesDir);
 }
 
-/*Permet d'attendre un temps donné afin d'éviter d`être bloqué par le serveur*/
-function sleep(ms) {
-  const start = Date.now();
-  while (Date.now() - start < ms) {  
-  }
+/*Permet de récupérer les liens des images et de les télécharger*/
+async function fetchImage(link) {
+  const absoluteUrl = baseUrl + link;
+      const response = await fetch(absoluteUrl,  {
+        headers: {
+            Authorization: `Token ${token}`,
+        },
+      });
+      if (response.ok) {
+        const buffer = await response.buffer();
+        const filePath = path.join(imagesDir, link.substring(link.lastIndexOf("/") + 1));
+        fs.writeFileSync(filePath, buffer);
+      } else {
+        console.error(response.statusText);
+      }
 }
 
-/*Permet de récupérer les liens des images et de les télécharger*/
 async function downloadImages() {
   console.log("Downloading images... Please wait...");
-  for (let { link, annotations } of imagesAndAnnotations) {
-    const absoluteUrl = baseUrl + link;
-    sleep(300);
-    const response = await fetch(absoluteUrl,  {
-      headers: {
-          Authorization: `Token ${token}`,
-      },
-    });
-    if (response.ok) {
-      const buffer = await response.buffer();
-      const filePath = path.join(imagesDir, link.substring(link.lastIndexOf("/") + 1));
-      fs.writeFileSync(filePath, buffer);
-    } else {
-      console.error(response.statusText);
-    }
-  };
+  let delay = 0;
+  imagesAndAnnotations.forEach(async ({ link, annotations }) => {
+    setTimeout(async () => {
+      fetchImage(link);
+    }, delay);
+    delay += 200;
+  });
   console.log("All images downloaded");
 }
 

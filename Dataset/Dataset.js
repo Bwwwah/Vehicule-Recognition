@@ -33,31 +33,41 @@ if (!fs.existsSync(imagesDir)) {
   fs.mkdirSync(imagesDir);
 }
 
-/*Permet de récupérer les liens des images et de les télécharger*/
-imagesAndAnnotations.forEach(async ({ link, annotations }, index) => {
-  const absoluteUrl = baseUrl + link;
-  console.log(absoluteUrl);
-  const response = await fetch(absoluteUrl,  {
-    headers: {
-        Authorization: `Token ${token}`,
-    },
-  });
-  if (response.ok) {
-    console.log(`Image ${index} downloaded`);
-    const buffer = await response.buffer();
-    const filePath = path.join(imagesDir, link.substring(link.lastIndexOf("/") + 1));
-    fs.writeFileSync(filePath, buffer);
-  } else {
-    console.error(response.statusText);
+/*Permet d'attendre un temps donné afin d'éviter d`être bloqué par le serveur*/
+function sleep(ms) {
+  const start = Date.now();
+  while (Date.now() - start < ms) {  
+  }
 }
-});
+
+/*Permet de récupérer les liens des images et de les télécharger*/
+async function downloadImages() {
+  console.log("Downloading images... Please wait...");
+  for (let { link, annotations } of imagesAndAnnotations) {
+    const absoluteUrl = baseUrl + link;
+    sleep(300);
+    const response = await fetch(absoluteUrl,  {
+      headers: {
+          Authorization: `Token ${token}`,
+      },
+    });
+    if (response.ok) {
+      const buffer = await response.buffer();
+      const filePath = path.join(imagesDir, link.substring(link.lastIndexOf("/") + 1));
+      fs.writeFileSync(filePath, buffer);
+    } else {
+      console.error(response.statusText);
+    }
+  };
+  console.log("All images downloaded");
+}
+
+downloadImages();
 
 const dataset = imagesAndAnnotations.map(({ link, annotations }, index) => ({
   link: `Images/${link.substring(link.lastIndexOf("/") + 1)}`,
   annotations,
 }));
-
-console.log(dataset);
 
 const json = JSON.stringify(dataset, null, 2);
 fs.writeFileSync('dataset.json', json);

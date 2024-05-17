@@ -17,13 +17,20 @@ Tous d'abord construisez le container :
 docker build -t downloader ./Downloader
 ```
 
-A présent lancez le :
+A présent lancez le comme ceci sous Windows :
 
 ```
-docker run -d --rm -v ./Downloader/Data:/Data --name Downloader downloader
+docker run --rm -v .\Downloader\Data:/Data --name Downloader downloader
 ```
 
-Environ quatre-vingt dix photos devraient êtres prises sur une durée d'une heure et trente minutes. Une fois cela fini le container s'éteindra de lui même. Vous retrouverez vos photos dans Downloader -> Data
+Sous Unix :
+
+```
+docker run --rm -v ./Downloader/Data:/Data --name Downloader downloader
+```
+
+Attendez la fin de la récupération.
+Environ quatre-vingt dix photos devraient êtres prises sur une durée d'une heure et trente minutes (Vous pouvez changer cette valeur dans le code en modifiant la valeur de nb_photos). Une fois cela fini le container s'éteindra de lui même. Vous retrouverez vos photos dans Downloader -> Data
 
 ## Label studio
 
@@ -39,11 +46,18 @@ Placez vous à nouveau à la racine du projet et entrez cette commande :
 docker build -t dataset -f ./Dataset/dockerfile .
 ```
 
-A présent lancez votre container :
+A présent lancez votre container comme ceci sous windows :
 
 ```
-docker run -d --rm -v ./Dataset/Images:/Images --name Dataset dataset
+docker run --rm -v .\Dataset\Images:/Images --name Dataset dataset
 ```
 
+Sous Unix :
+
+```
+docker run --rm -v ./Dataset/Images:/Images --name Dataset dataset
+```
+
+Attendez la fin du téléchargement.
 Vos photos seront enregistrés sous : Dataset -> Images.
 dataset.json contient une version simplifé de votre export.json.

@@ -5,6 +5,7 @@ import fs from 'fs';
 let previousHash = '';
 let i = 1;
 
+/*Permet de récupérer les images de la caméra toutes les minutes*/
 async function downloadImages() {
   if (!fs.existsSync('Data')) {
     fs.mkdirSync('Data');
@@ -13,13 +14,14 @@ async function downloadImages() {
   for (let j = 0; j < 90; j++) {
     let hash;
     let buffer;
-
+    
     while (true) {
       console.log("Downloading image...")
       const response = await fetch('https://download.data.grandlyon.com/files/rdata/pvo_patrimoine_voirie.pvocameracriter/CWL9018.JPG');
       buffer = await response.buffer();
       hash = crypto.createHash('sha256').update(buffer).digest('hex');
 
+      /*Empêche les doublons*/
       if (hash !== previousHash) {
         break;
       }
@@ -28,6 +30,7 @@ async function downloadImages() {
       await new Promise(resolve => setTimeout(resolve, 10 * 1000)); // 10 * 1000 ms = 10 seconds
     }
 
+    /*Génère le nom des photos à partir de la date*/
     function getFormattedTimestamp() {
       const date = new Date();
       const year = date.getFullYear();

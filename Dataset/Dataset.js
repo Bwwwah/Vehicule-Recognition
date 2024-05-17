@@ -2,11 +2,13 @@ import fs from "fs";
 import fetch from "node-fetch";
 import path from "path";
 
+/*Token d'identification*/
 const token = "16696e673bffd8a7fafe90f7a5cf1049e480b1a4";
 
 const data = JSON.parse(fs.readFileSync("export.json", "utf8"));
 const baseUrl = "https://app.heartex.com/storage-data/uploaded/?filepath=";
 
+/*Permet de simplifier l'export.json*/
 const imagesAndAnnotations = data.map((item) => {
   return {
     link: item.data.image,
@@ -31,6 +33,7 @@ if (!fs.existsSync(imagesDir)) {
   fs.mkdirSync(imagesDir);
 }
 
+/*Permet de récupérer les liens des images et de les télécharger*/
 imagesAndAnnotations.forEach(async ({ link, annotations }, index) => {
   const absoluteUrl = baseUrl + link;
   console.log(absoluteUrl);

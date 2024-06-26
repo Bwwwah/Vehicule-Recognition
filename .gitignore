@@ -4,3 +4,10 @@ package-lock.json
 *.jpg
 dataset.json
 export.json
+labels.json
+projetIA
+.ipynb_checkpoints
+preds.json
+runs
+*.pt
+Metrics-Images

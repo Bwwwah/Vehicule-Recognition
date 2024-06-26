@@ -1,0 +1,14 @@
+ultralytics==8.2.38
+numpy
+opencv-python==4.10.0.84
+matplotlib==3.9.0
+pillow==10.3.0
+requests==2.25.1
+scikit-learn
+pycocotools
+torch
+torchvision
+seaborn
+watchdog
+dash
+plotly

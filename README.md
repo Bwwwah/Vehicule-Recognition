@@ -6,6 +6,10 @@ Ce projet permet d'entrainer un réseau de neurones à reconnaîtres des véhicu
 
 Pour commencer téléchargez ce repo git en local. Assurez vous d'avoir docker d'installé sur votre ordinateur et c'est partie !
 
+Voici un schéma de l'architecture du projet pour vous donner une idée du fonctionnement global :
+
+![alt text](<Schema IA.png>)
+
 ## Downloader
 
 Ce container permettra de récupérer les images sur la caméra cible toute les minutes. Si vous avez déja vos images passez au prochain chapitre.
@@ -49,15 +53,31 @@ docker build -t dataset -f ./Dataset/dockerfile .
 A présent lancez votre container comme ceci sous windows :
 
 ```
-docker run --rm -v .\Dataset\Images:/Images --name Dataset dataset
+docker run --rm -v .\Dataset\Images:/Images -v .\Dataset\labels:\labels --name Dataset dataset
 ```
 
 Sous Unix :
 
 ```
-docker run --rm -v ./Dataset/Images:/Images --name Dataset dataset
+docker run --rm -v ./Dataset/Images:/Images -v ./Dataset/labels:/labels --name Dataset dataset
 ```
 
 Attendez la fin du téléchargement.
 Vos photos seront enregistrés sous : Dataset -> Images.
-dataset.json contient une version simplifé de votre export.json.
+labels.json contient une version simplifé de votre export.json.
+
+## Models et métriques
+
+Voici les différents modèles et leurs résultats
+
+|   MODELS   |   mAP |  F1 | IoU | Inference |
+|---    |:--   | :-:|   --:|    ---|
+|YoloV10|```0,1```|```0,1```|```0,1```|```1```|s
+|EfficientDet|```0,1```|```0,1```|```0,1```|```1```|
+|Faster R-CNN|```0,1```|```0,1```|```0,1```|```1```|
+
+## Deploy
+
+docker build -t deploy -f ./Deploy/dockerfile .
+
+docker run --rm --name Deploy deploy

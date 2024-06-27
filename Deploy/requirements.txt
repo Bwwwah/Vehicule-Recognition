@@ -12,3 +12,5 @@ seaborn
 watchdog
 dash
 plotly
+dash-bootstrap-components
+dill

@@ -33,14 +33,25 @@ Sous Unix :
 docker run --rm -v ./Downloader/Data:/Data --name Downloader downloader
 ```
 
-Attendez la fin de la récupération.
-Environ quatre-vingt dix photos devraient êtres prises sur une durée d'une heure et trente minutes (Vous pouvez changer cette valeur dans le code en modifiant la valeur de nb_photos). Une fois cela fini le container se supprimera de lui même. Vous retrouverez vos photos dans Downloader -> Data
+Vous retrouverez vos photos dans Downloader -> Data
 
-## Label studio
+## Deploy
+
+Pour lancer le projet assurez vous d'avoir bien lancé le docker Downloader puis faites :
+
+docker build -t deploy -f ./Deploy/dockerfile .
+
+docker run -v ./Downloader/Data:/app/Downloader/Data -p 8050:8050 --rm --name Deploy deploy
+
+Maitenant sur http://127.0.0.1:8050 vous aurez votre Dashboard
+
+## Partie Test 
+
+### Label studio (Pour tests)
 
 Ensuite rendez vous sur le site label studio. Créez un projet puis importez et enfin labelisez vos photos. Une fois ceci fait exportez vos données de labélisation au format JSON et renommez ce fichier "export.json". Placez le à la racine du projet.
 
-## Dataset
+### Dataset (Pour tests)
 
 Ce container va télécharger vos photos labelisés.
 
@@ -65,19 +76,3 @@ docker run --rm -v ./Dataset/Images:/Images -v ./Dataset/labels:/labels --name D
 Attendez la fin du téléchargement.
 Vos photos seront enregistrés sous : Dataset -> Images.
 labels.json contient une version simplifé de votre export.json.
-
-## Models et métriques
-
-Voici les différents modèles et leurs résultats
-
-|   MODELS   |   mAP |  F1 | IoU | Inference |
-|---    |:--   | :-:|   --:|    ---|
-|YoloV10|```0,1```|```0,1```|```0,1```|```1```|s
-|EfficientDet|```0,1```|```0,1```|```0,1```|```1```|
-|Faster R-CNN|```0,1```|```0,1```|```0,1```|```1```|
-
-## Deploy
-
-docker build -t deploy -f ./Deploy/dockerfile .
-
-docker run --rm --name Deploy deploy

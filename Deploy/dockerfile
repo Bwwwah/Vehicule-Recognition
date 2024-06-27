@@ -1,8 +1,16 @@
 FROM python:3.10-slim
 WORKDIR /app
+
+# Ajouter les fichiers nécessaires
 ADD ./Deploy/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 ADD Deploy .
-ADD ./Dataset/Images ./Dataset/Images
-RUN  apt-get update && apt-get install -y libgl1-mesa-glx libopencv-dev
+#ADD ./Dataset/Images ./Dataset/Images
+ADD ./Downloader/Data/ ./Downloader/Data/
+ADD ./runs ./runs
+
+EXPOSE 8050
+
+RUN apt-get update && apt-get install -y libgl1 libglib2.0-0
+
 CMD ["python", "Main.py"]

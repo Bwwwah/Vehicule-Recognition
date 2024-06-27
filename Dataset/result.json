@@ -2229,20 +2229,12 @@
       "name": "Car"
     },
     {
-      "id": 3,
-      "name": "Motor scooter"
-    },
-    {
       "id": 4,
       "name": "Motorbike"
     },
     {
       "id": 5,
       "name": "Pedestrian"
-    },
-    {
-      "id": 6,
-      "name": "Scooter"
     },
     {
       "id": 7,

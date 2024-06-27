@@ -31,6 +31,15 @@ def transform_pytorch(predictions, output_file, img_name, results_dir, allowed_c
     else:
         raise FileNotFoundError(f"Results file {results_dir} not found")
 
+    category_map = {
+        0: 5,
+        1: 0,
+        2: 2,
+        3: 4,
+        5: 1,
+        7: 7
+    }
+
     for prediction in predictions:
         detections = []
 
@@ -45,7 +54,7 @@ def transform_pytorch(predictions, output_file, img_name, results_dir, allowed_c
             score = scores[i]
 
             # Ajouter la condition pour filtrer par les category_id autorisés
-            if label in allowed_category_ids:
+            if label in category_map:
                 x_min, y_min, x_max, y_max = box
                 width = x_max - x_min
                 height = y_max - y_min
@@ -53,7 +62,7 @@ def transform_pytorch(predictions, output_file, img_name, results_dir, allowed_c
 
                 detection = {
                     "image_id": image_id,
-                    "category_id": label,
+                    "category_id": category_map[label],  # Convertir le category_id
                     "bbox": bbox,
                     "score": score,
                     "time": img_name 
@@ -65,7 +74,7 @@ def transform_pytorch(predictions, output_file, img_name, results_dir, allowed_c
     with open(output_file, 'w') as out_file:
         json.dump(existing_detections, out_file, indent=4)
 
-def transform_yolo(input_dir, output_file, image_width, image_height, img_name, results_dir):
+def transform_yolo(input_dir, output_file, image_width, image_height, img_name):
     files = os.listdir(input_dir)
     input_file = os.path.join(input_dir, files[0])
 
@@ -74,22 +83,23 @@ def transform_yolo(input_dir, output_file, image_width, image_height, img_name, 
         with open(output_file, 'r') as file:
             existing_detections = json.load(file)
     else:
-        existing_detections = []
+        existing_detections = []  
 
-    if os.path.exists(results_dir):
-        with open(results_dir, 'r') as file:
-            results = json.load(file)
-            images = results['images']
-            for image in images:
-                if img_name in image['file_name']:
-                    image_id = image['id']
-                    break
-    else:
-        results = []    
+    max_image_id = max([detection['image_id'] for detection in existing_detections], default=0)
+    new_image_id = max_image_id + 1
 
     detections = []
 
-    # Lire le contenu du fichier d'entrée
+    # Dictionnaire de mappage des category_id
+    category_map = {
+        0: 5,
+        1: 0,
+        2: 2,
+        3: 4,
+        5: 1,
+        7: 7
+    }
+
     with open(input_file, 'r') as file:
         lines = file.readlines()
         for line in lines:
@@ -97,27 +107,31 @@ def transform_yolo(input_dir, output_file, image_width, image_height, img_name, 
             category_id = int(parts[0])
 
             # Vérifier si category_id est dans la liste autorisée
-            if category_id in [0, 1, 2, 3, 5, 7]:
+            if category_id in category_map:
+                # Remplacer category_id par sa nouvelle valeur
+                new_category_id = category_map[category_id]
+
                 x_center = float(parts[1]) * image_width
                 y_center = float(parts[2]) * image_height
                 width = float(parts[3]) * image_width
                 height = float(parts[4]) * image_height
                 score = float(parts[5])
-                
+
                 # Convertir les coordonnées du centre au format COCO [x_min, y_min, width, height]
                 x_min = x_center - (width / 2)
                 y_min = y_center - (height / 2)
-                
+
                 bbox = [x_min, y_min, width, height]
-                
+
                 detection = {
-                    "image_id": image_id,
-                    "category_id": category_id,
+                    "image_id": new_image_id,
+                    "category_id": new_category_id,
                     "bbox": bbox,
                     "score": score,
                     "time": img_name
                 }
                 detections.append(detection)
+
 
     with open(input_file, 'w') as fichier:
             pass

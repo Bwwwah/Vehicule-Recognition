@@ -11,6 +11,6 @@ ADD ./runs ./runs
 
 EXPOSE 8050
 
-RUN apt-get update && apt-get install -y libgl1 libglib2.0-0
+RUN apt-get update && apt-get install -y libgl1 libglib2.0-0 curl net-tools
 
 CMD ["python", "Main.py"]

@@ -161,13 +161,13 @@ def main():
         coco_data = load_coco_data(coco_filepath)
     
         observer = monitor_file(coco_filepath, lambda: print('Fichier COCO mis à jour'))
-        app.run_server(debug=False)
+        app.run_server(host='0.0.0.0', port=8050, debug=False)
         observer.join()
     else:
         coco_data = load_coco_data(coco_filepath)
 
         observer = monitor_file(coco_filepath, lambda: print('Fichier COCO mis à jour'))
-        app.run_server(host='0.0.0.0', port=8050, debug=False)
+        app.run_server(host='0.0.0.0', port=8050,debug=False)
         observer.join()
     return coco_data
 
